@@ -1,14 +1,14 @@
 {
-  "name": "tabletopsimulator-lua",
-  "displayName": "Tabletop Simulator Lua",
-  "author": "Rolando Romero <contact@rolandostar.com> (https://rolandostar.com/)",
+  "name": "tabletopsimulator-lua-dangreen",
+  "displayName": "Tabletop Simulator Lua -",
+  "author": "Daniel Green Forked from Rolando Romero <contact@rolandostar.com> (https://rolandostar.com/)",
   "description": "Extension for VSCode to make writing Lua scripts for Tabletop Simulator easier.",
-  "version": "1.0.2",
-  "publisher": "rolandostar",
+  "version": "1.0.3",
+  "publisher": "danielgreen",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rolandostar/tabletopsimulator-lua-vscode"
+    "url": "https://github.com/Firoso/tabletopsimulator-lua-vscode"
   },
   "qna": "false",
   "engines": {
@@ -37,7 +37,8 @@
           "Tabletop Simulator Lua"
         ],
         "extensions": [
-          ".ttslua"
+          ".ttslua",
+          ".lua"
         ],
         "configuration": "./syntaxes/tts_lua-configuration.json"
       }

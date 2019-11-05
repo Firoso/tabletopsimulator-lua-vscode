@@ -137,11 +137,24 @@ class TTSAdapter {
         includeFileName = includeFileName.substr(1)
         sharedFilePath = includePath
         newBaseFolder = path.dirname(includeFileName)
+      } else if (includeFileName.startsWith('|')) {
+        includeFileName = includeFileName.substr(1)
+        sharedFilePath = vscode.workspace.workspaceFolders[1].uri.fsPath
+        newBaseFolder = path.dirname(includeFileName)     
       } else {
         sharedFilePath = path.join(includePath, baseFolder)
         newBaseFolder = path.dirname(path.join(baseFolder, includeFileName))
       }
       let sharedFullFile = path.join(sharedFilePath, includeFileName + '.ttslua')
+      if (fs.existsSync(sharedFullFile) && fs.statSync(sharedFullFile).isFile())
+      {
+        // File exists, so let's proceed.
+      }
+      else
+      {
+        sharedFullFile = path.join(sharedFilePath, includeFileName + '.lua')
+      }
+
       if (!alreadyInserted.includes(sharedFullFile)) {
         alreadyInserted.push(sharedFullFile)
         let sharedFileContents
