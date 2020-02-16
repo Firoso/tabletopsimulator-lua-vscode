@@ -195,6 +195,21 @@
 					"type": "boolean",
 					"default": true
 				},
+				"TTSLua.bundleOtherFiles": {
+					"title": "Bundle other files specificed in source code",
+					"markdownDescription": "Bundles raw lua files specified by ``require('file')`` into the calling file's content as modules",
+					"type": "boolean",
+					"default": true
+				},
+				"TTSLua.bundlingSearchPaths": {
+					"title": "Paths used to search for files to use in bundling.",
+					"markdownDescription": "Uses path search syntax '?.lua', '/src/?.lua', 'C:/ttsmod/?.ttslua'",
+					"type": "array",
+					"default": [
+						"?.lua",
+						"?.ttslua"
+					]
+				},
 				"TTSLua.logSave": {
 					"title": "Log Saves",
 					"description": "Enable to log a message to the Console when a save occurs.",
@@ -236,7 +251,8 @@
 		"fs-extra": "^8.1.0",
 		"mkdirp": "^0.5.1",
 		"net": "^1.0.2",
-		"vscode-textmate": "^4.4.0"
+		"vscode-textmate": "^4.4.0",
+		"luabundle": "^1.4.0"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.1",

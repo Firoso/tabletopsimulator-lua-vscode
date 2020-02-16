@@ -2,6 +2,7 @@
 
 const { TTSLuaDir, docsFolder, FileHandler } = require('./filehandler')
 const TTSParser = require('./bbcode/tabletop')
+const luabundle = require('luabundle')
 const vscode = require('vscode')
 const path = require('path')
 const net = require('net')
@@ -59,7 +60,7 @@ class TTSAdapter {
   getScripts () {
     let vsFolders = vscode.workspace.workspaceFolders
     if (!vsFolders || vsFolders.findIndex(val => val.uri.fsPath === this._dir.fsPath) === -1) {
-      vscode.workspace.updateWorkspaceFolders(0, vsFolders ? vsFolders.length : null, { uri: this._dir })
+      vscode.workspace.updateWorkspaceFolders(0, 0, { uri: this._dir })
     }
     this._sendToTTS(0)
   }
@@ -88,9 +89,15 @@ class TTSAdapter {
               let obj = objects.get(guid)
               // include system
               let luaScript = fs.readFileSync(filePath, 'utf8')
-              obj.script = vscode.workspace.getConfiguration('TTSLua').get('includeOtherFiles')
+              
+              let includedLuaScript = vscode.workspace.getConfiguration('TTSLua').get('includeOtherFiles')
                 ? this._uncompressIncludes(luaScript, '', docsFolder)
                 : luaScript
+
+              obj.script = vscode.workspace.getConfiguration('TTSLua').get('bundleOtherFiles')
+                ? this._bundleRequires(includedLuaScript)
+                : includedLuaScript
+
             } else if (filePath.endsWith('.xml')) {
               let obj = objects.get(guid)
               // let horizontalWhitespaceSet = '\\t\\v\\f\\r \u00a0\u2000-\u200b\u2028-\u2029\u3000'
@@ -166,6 +173,33 @@ class TTSAdapter {
       }
     }
     return luaScript
+  }
+
+  _bundleRequires (luaScript) {
+
+    let paths = vscode.workspace.getConfiguration('TTSLua').get('bundlingSearchPaths')
+    let options = {
+      expressionHandler: (module, expression) => {
+        start = expression.loc.start
+        display_name = module.name == '__root'? filename : module.name
+        detail = "Non-literal require found in '" + display_name + "' at " + start.line + ":" + start.column
+        console.warn("Failed to create bundle: " + filename)
+        return null
+      },
+      identifiers: {
+        require: '__bundle_require'
+      },
+      isolate: true,
+      paths: paths,
+      postprocess: (module) => {
+        let markerComment = '--- ' + '#tts-module' + ' "' + module.name + '"\n'
+        return markerComment + module.content + '\n' + markerComment
+      },
+      rootModuleName: '__root'
+    }
+    const bundledLua = luabundle.bundleString(luaScript, options)
+
+    return bundledLua;
   }
 
   customMessage (object) {
