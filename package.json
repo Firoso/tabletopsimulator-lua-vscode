@@ -3,7 +3,7 @@
 	"displayName": "Tabletop Simulator Lua",
 	"author": "Rolando Romero <contact@rolandostar.com> (https://rolandostar.com/)",
 	"description": "Extension for VSCode to make writing Lua scripts for Tabletop Simulator easier.",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"publisher": "rolandostar",
 	"license": "MIT",
 	"repository": {
@@ -30,7 +30,8 @@
 		"onCommand:ttslua.getScripts",
 		"onCommand:ttslua.saveAndPlay",
 		"onCommand:ttslua.installConsole",
-		"workspaceContains:**/.ttslua"
+		"workspaceContains:**/.ttslua",
+		"workspaceContains:**/.lua"
 	],
 	"main": "./src/extension",
 	"contributes": {

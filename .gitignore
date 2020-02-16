@@ -10,3 +10,4 @@ vsc-extension-quickstart.md
 **/.eslintrc.json
 .editorconfig
 node_modules/**
+*.vsix

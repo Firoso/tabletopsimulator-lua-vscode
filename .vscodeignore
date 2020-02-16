@@ -4,9 +4,10 @@ test/**
 assets/docs/**
 assets/github/**
 assets/src/**
+.gitignore
 vsc-extension-quickstart.md
 **/jsconfig.json
 **/*.map
 **/.eslintrc.json
 .editorconfig
-node_modules/**
+*.vsix

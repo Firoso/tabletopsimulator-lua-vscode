@@ -176,7 +176,6 @@ class TTSAdapter {
   }
 
   _bundleRequires (luaScript) {
-
     let paths = vscode.workspace.getConfiguration('TTSLua').get('bundlingSearchPaths')
     let options = {
       expressionHandler: (module, expression) => {
